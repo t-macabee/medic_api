@@ -3,16 +3,16 @@
     public class User
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime LastLogin { get; set; }
         public int Orders { get; set; }
-        public string ImageUrl { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public string ImageUrl { get; set; } 
+        public string Status { get; set; } 
 
-        public string Username { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public string PasswordSalt { get; set; } = string.Empty;
+        public string Username { get; set; }
+        public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; } 
 
         public int RoleId { get; set; }
         public Roles Role { get; set; }

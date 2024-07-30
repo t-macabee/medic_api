@@ -1,23 +1,16 @@
-using Medic.API.Data;
-using Medic.API.Helpers;
-using Mapster;
-using Microsoft.EntityFrameworkCore;
-using Medic.API.Interfaces;
-using Medic.API.Services;
+using Medic.API.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
-
-builder.Services.AddMapster();
-MapsterConfiguration.RegisterMappings();
 
 var app = builder.Build();
 
@@ -28,6 +21,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

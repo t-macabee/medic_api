@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Medic.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240730101744_Initial")]
+    [Migration("20240730121026_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,11 +110,11 @@ namespace Medic.API.Data.Migrations
                             Id = 1,
                             DateOfBirth = new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "https://randomuser.me/api/portraits/men/23.jpg",
-                            LastLogin = new DateTime(2024, 7, 30, 12, 17, 43, 794, DateTimeKind.Local).AddTicks(8459),
+                            LastLogin = new DateTime(2024, 7, 30, 14, 10, 25, 807, DateTimeKind.Local).AddTicks(6504),
                             Name = "John Doe",
                             Orders = 0,
-                            PasswordHash = "7UP5JL0unol4NQegO6hePmSrKI24UOFBAaXkqR8mmDI=",
-                            PasswordSalt = "GMzTqHylfrYMsg/uTUcY4Q==",
+                            PasswordHash = "BrG9gaZ3ng0qLVY7fabp1MA847oUoUphhF6CCeP4z+w=",
+                            PasswordSalt = "vkhl0inMmp4u85NXXTYM1A==",
                             RoleId = 1,
                             Status = "Active",
                             Username = "admin"
@@ -124,11 +124,11 @@ namespace Medic.API.Data.Migrations
                             Id = 2,
                             DateOfBirth = new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "https://randomuser.me/api/portraits/women/39.jpg",
-                            LastLogin = new DateTime(2024, 7, 30, 12, 17, 43, 794, DateTimeKind.Local).AddTicks(8506),
+                            LastLogin = new DateTime(2024, 7, 30, 14, 10, 25, 807, DateTimeKind.Local).AddTicks(6550),
                             Name = "Jane Doe",
-                            Orders = 6,
-                            PasswordHash = "rSzPXNZr9vt0KKh8fxCh/nww0RXVK5KKnMAYCOg+oKc=",
-                            PasswordSalt = "IJQ0hhHlLmVMl+fjjCIFLw==",
+                            Orders = 1,
+                            PasswordHash = "ibqoX+L42TZ32mpmM5w+XOwl5Y0OhMShX3cdmCWqoG4=",
+                            PasswordSalt = "eh3+CGg4xIphYLwAQVaWoQ==",
                             RoleId = 2,
                             Status = "Active",
                             Username = "janedoe"

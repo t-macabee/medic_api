@@ -1,12 +1,13 @@
 ﻿using Medic.API.Models;
+using Medic.API.Models.DTOs;
 
 namespace Medic.API.Interfaces
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserDto>> GetAllUsers();
-        Task<UserDto> GetUserDetails(int id);
-        Task RegisterUser(RegisterUserDto registerUser);
+        Task<IEnumerable<UsersDto>> GetAllUsers();
+        Task<UsersDto> GetUserDetails(int id);
+        Task<UsersDto> EditUser(int id, UserEditDto userEdit);
         Task BlockUser(int id);
     }
 }

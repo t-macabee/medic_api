@@ -1,64 +1,61 @@
-﻿using MapsterMapper;
+﻿using Mapster;
+using MapsterMapper;
 using Medic.API.Data;
-using Medic.API.Entities;
-using Medic.API.Helpers;
 using Medic.API.Interfaces;
 using Medic.API.Models;
-using Microsoft.AspNetCore.Identity;
+using Medic.API.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Medic.API.Services
 {
     public class UserService : IUserService
     {
-        private DataContext Context { get; set; } 
-        private IMapper Mapper { get; set; } 
+        private DataContext context { get; set; }
+        private IMapper mapper { get; set; }
 
         public UserService(DataContext context, IMapper mapper)
         {
-            Context = context;
-            Mapper = mapper;
-        }        
-
-        public async Task<IEnumerable<UserDto>> GetAllUsers()
-        {
-            var users = await Context.Users.Include(x => x.Role).ToListAsync();
-            return Mapper.Map<IEnumerable<UserDto>>(users);
+            this.context = context;
+            this.mapper = mapper;
         }
 
-        public async Task<UserDto> GetUserDetails(int id)
+        public async Task<IEnumerable<UsersDto>> GetAllUsers()
         {
-            var user = await Context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
+            var users = await context.Users.Include(x => x.Role).ToListAsync();
+            return mapper.Map<IEnumerable<UsersDto>>(users);
+        }
+
+        public async Task<UsersDto> GetUserDetails(int id)
+        {
+            var user = await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found.");
             }
 
-            return Mapper.Map<UserDto>(user);
+            return mapper.Map<UsersDto>(user);
         }
 
-        public async Task RegisterUser(RegisterUserDto registerUser)
+        public async Task<UsersDto> EditUser(int id, UserEditDto userEdit)
         {
-            var existingUser = await Context.Users.FirstOrDefaultAsync(x => x.Username == registerUser.Username);
+            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == id);
 
-            if (existingUser != null) 
+            if (user == null)
             {
-                throw new InvalidOperationException("A user with this username already exists.");
+                throw new KeyNotFoundException("User not found.");
             }
 
-            var newUser = Mapper.Map<User>(registerUser);
+            user = userEdit.Adapt(user);
 
-            newUser.PasswordSalt = PasswordBuilder.GenerateSalt();
-            newUser.PasswordHash = PasswordBuilder.GenerateHash(newUser.PasswordSalt, registerUser.Password);
+            await context.SaveChangesAsync();
 
-            await Context.Users.AddAsync(newUser);
-            await Context.SaveChangesAsync();
+            return mapper.Map<UsersDto>(user);
         }
 
         public async Task BlockUser(int id)
         {
-            var user = await Context.Users.FindAsync(id);
+            var user = await context.Users.FindAsync(id);
 
             if (user == null)
             {
@@ -67,9 +64,11 @@ namespace Medic.API.Services
 
             user.Status = "Blocked";
 
-            Context.Users.Update(user);
+            context.Users.Update(user);
 
-            await Context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
-    }
+
+       
+    }       
 }

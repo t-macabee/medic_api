@@ -1,40 +1,41 @@
 using Medic.API.Interfaces;
-using Medic.API.Models;
+using Medic.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class UserController : ControllerBase
+    [Route("/")]
+    public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
-        public UserController(IUserService userService)
+
+        public UsersController(IUserService userService)
         {
             this.userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await userService.GetAllUsers();
             return Ok(users);
         }
 
-        [HttpGet("details/{id}")]
-        public async Task<ActionResult> GetUserDetails(int id)
+        [HttpGet("users/details/{id}")]
+        public async Task<IActionResult> GetUserDetails(int id)
         {
             var user = await userService.GetUserDetails(id);
             return Ok(user);
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser([FromBody]RegisterUserDto registerUser)
+        [HttpPut("users/edit/{id}")]
+        public async Task<IActionResult> EditUser(int id, [FromBody] UserEditDto userEditDto)
         {
             try
             {
-                await userService.RegisterUser(registerUser);
-                return Ok(new { message = "User registered." });
+                var updatedUser = await userService.EditUser(id, userEditDto);
+                return Ok(updatedUser);
             }
             catch (Exception ex)
             {
@@ -42,7 +43,7 @@ namespace Medic.API.Controllers
             }
         }
 
-        [HttpPost("block/{id}")]
+        [HttpPost("users/block/{id}")]
         public async Task<IActionResult> BlockUser(int id)
         {
             try
@@ -54,6 +55,6 @@ namespace Medic.API.Controllers
             {
                 return StatusCode(500, new { message = "An unexpected error occurred." });
             }
-        }
+        }        
     }
 }
