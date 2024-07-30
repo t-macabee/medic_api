@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Medic.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240729171434_Initial")]
+    [Migration("20240730101744_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -54,7 +54,7 @@ namespace Medic.API.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Medic.API.Entities.Users", b =>
+            modelBuilder.Entity("Medic.API.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,12 +109,12 @@ namespace Medic.API.Data.Migrations
                         {
                             Id = 1,
                             DateOfBirth = new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "",
-                            LastLogin = new DateTime(2024, 7, 29, 19, 14, 34, 551, DateTimeKind.Local).AddTicks(2426),
+                            ImageUrl = "https://randomuser.me/api/portraits/men/23.jpg",
+                            LastLogin = new DateTime(2024, 7, 30, 12, 17, 43, 794, DateTimeKind.Local).AddTicks(8459),
                             Name = "John Doe",
                             Orders = 0,
-                            PasswordHash = "mViomH49QYuU5hpA79VhtV2g+WRdE/VOMT2CmfCLa8U=",
-                            PasswordSalt = "4X9g3IjpFFXII/o+npcQSg==",
+                            PasswordHash = "7UP5JL0unol4NQegO6hePmSrKI24UOFBAaXkqR8mmDI=",
+                            PasswordSalt = "GMzTqHylfrYMsg/uTUcY4Q==",
                             RoleId = 1,
                             Status = "Active",
                             Username = "admin"
@@ -123,19 +123,19 @@ namespace Medic.API.Data.Migrations
                         {
                             Id = 2,
                             DateOfBirth = new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "",
-                            LastLogin = new DateTime(2024, 7, 29, 19, 14, 34, 551, DateTimeKind.Local).AddTicks(2471),
+                            ImageUrl = "https://randomuser.me/api/portraits/women/39.jpg",
+                            LastLogin = new DateTime(2024, 7, 30, 12, 17, 43, 794, DateTimeKind.Local).AddTicks(8506),
                             Name = "Jane Doe",
                             Orders = 6,
-                            PasswordHash = "ldNwvNQib3GzyWUnfH8WxPwZKBkZVThinZhsADgEQNg=",
-                            PasswordSalt = "ibyRWkU/XaeQk2bKW8UyOw==",
+                            PasswordHash = "rSzPXNZr9vt0KKh8fxCh/nww0RXVK5KKnMAYCOg+oKc=",
+                            PasswordSalt = "IJQ0hhHlLmVMl+fjjCIFLw==",
                             RoleId = 2,
                             Status = "Active",
                             Username = "janedoe"
                         });
                 });
 
-            modelBuilder.Entity("Medic.API.Entities.Users", b =>
+            modelBuilder.Entity("Medic.API.Entities.User", b =>
                 {
                     b.HasOne("Medic.API.Entities.Roles", "Role")
                         .WithMany("Users")
