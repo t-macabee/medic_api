@@ -1,11 +1,13 @@
 ﻿using Medic.API.Interfaces;
 using Medic.API.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers
 {
     [ApiController]
     [Route("/")]
+    //[Authorize(Roles = "Administrator")]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService accountService;

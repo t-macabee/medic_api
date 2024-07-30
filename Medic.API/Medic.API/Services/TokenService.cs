@@ -20,7 +20,8 @@ namespace Medic.API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Username)
+                new Claim(JwtRegisteredClaimNames.NameId, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.Name)
             };
 
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);

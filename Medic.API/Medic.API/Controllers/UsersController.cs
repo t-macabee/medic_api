@@ -1,11 +1,13 @@
 using Medic.API.Interfaces;
 using Medic.API.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers
 {
     [ApiController]
     [Route("/")]
+    //[Authorize(Roles = "Administrator")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
@@ -43,7 +45,7 @@ namespace Medic.API.Controllers
             }
         }
 
-        [HttpPost("users/togglestatus/{id}")]
+        [HttpPost("users/toggle-status/{id}")]
         public async Task<IActionResult> BlockUser(int id)
         {
             try

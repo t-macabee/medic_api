@@ -27,15 +27,25 @@ namespace Medic.API.Services
         {
             var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(y => y.Username == login.Username);
 
-            if(user == null || !PasswordBuilder.VerifyPassword(user.PasswordSalt, login.Password, user.PasswordHash))
+            if (user == null)
+            {
+                throw new Exception("Invalid username or password.");
+            }
+
+            if (user.Status == "Blocked")
+            {
+                throw new Exception("User profile has beed blocked.");
+            }
+
+            if (!PasswordBuilder.VerifyPassword(user.PasswordSalt, login.Password, user.PasswordHash))
             {
                 throw new Exception("Invalid username or password.");
             }            
 
-            if(user.Role.Name != "Administrator")
+            if (user.Role.Name != "Administrator")
             {
                 throw new Exception("Insufficient credentials. Only administrator can log in.");
-            }
+            }           
 
             user.LastLogin = DateTime.Now;
             await context.SaveChangesAsync();
