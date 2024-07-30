@@ -8,6 +8,6 @@ namespace Medic.API.Interfaces
         Task<IEnumerable<UsersDto>> GetAllUsers();
         Task<UsersDto> GetUserDetails(int id);
         Task<UsersDto> EditUser(int id, UserEditDto userEdit);
-        Task BlockUser(int id);
+        Task ToggleUserStatus(int id);
     }
 }

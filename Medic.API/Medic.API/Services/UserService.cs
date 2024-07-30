@@ -53,7 +53,7 @@ namespace Medic.API.Services
             return mapper.Map<UsersDto>(user);
         }
 
-        public async Task BlockUser(int id)
+        public async Task ToggleUserStatus(int id)
         {
             var user = await context.Users.FindAsync(id);
 
@@ -62,7 +62,14 @@ namespace Medic.API.Services
                 throw new KeyNotFoundException("User not found.");
             }
 
-            user.Status = "Blocked";
+            if (user.Status == "Blocked")
+            {
+                user.Status = "Active";
+            }
+            else
+            {
+                user.Status = "Blocked";
+            }
 
             context.Users.Update(user);
 

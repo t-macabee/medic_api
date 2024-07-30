@@ -43,13 +43,13 @@ namespace Medic.API.Controllers
             }
         }
 
-        [HttpPost("users/block/{id}")]
+        [HttpPost("users/togglestatus/{id}")]
         public async Task<IActionResult> BlockUser(int id)
         {
             try
             {
-                await userService.BlockUser(id);
-                return Ok(new { message = "User has been blocked." });
+                await userService.ToggleUserStatus(id);
+                return Ok(new { message = "User has been toggled." });
             }
             catch (Exception ex)
             {

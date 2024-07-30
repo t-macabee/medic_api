@@ -37,6 +37,9 @@ namespace Medic.API.Services
                 throw new Exception("Insufficient credentials. Only administrator can log in.");
             }
 
+            user.LastLogin = DateTime.Now;
+            await context.SaveChangesAsync();
+
             var token = tokenService.CreateToken(user);
             var entity = mapper.Map<UsersDto>(user);
 
