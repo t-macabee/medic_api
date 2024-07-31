@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Medic.API.Controllers
 {
     [ApiController]
-    [Route("/")]
+    [Route("api/[controller]")]
     //[Authorize(Roles = "Administrator")]
     public class AccountController : ControllerBase
     {

@@ -1,12 +1,11 @@
 using Medic.API.Interfaces;
 using Medic.API.Models.DTOs;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers
 {
     [ApiController]
-    [Route("/")]
+    [Route("api/[controller]")]
     //[Authorize(Roles = "Administrator")]
     public class UsersController : ControllerBase
     {
@@ -17,21 +16,21 @@ namespace Medic.API.Controllers
             this.userService = userService;
         }
 
-        [HttpGet("users")]
-        public async Task<IActionResult> GetAllUsers([FromQuery]BaseSearchObject search)
+        [HttpGet("get-all")]
+        public async Task<IActionResult> GetAllUsers()
         {
-            var users = await userService.GetAllUsers(search);
+            var users = await userService.GetAllUsers();
             return Ok(users);
         }
 
-        [HttpGet("users/details/{id}")]
+        [HttpGet("details/{id}")]
         public async Task<IActionResult> GetUserDetails(int id)
         {
             var user = await userService.GetUserDetails(id);
             return Ok(user);
         }
 
-        [HttpPut("users/edit/{id}")]
+        [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditUser(int id, [FromBody] UserEditDto userEditDto)
         {
             try
@@ -45,7 +44,7 @@ namespace Medic.API.Controllers
             }
         }
 
-        [HttpPost("users/toggle-status/{id}")]
+        [HttpPost("toggle-status/{id}")]
         public async Task<IActionResult> BlockUser(int id)
         {
             try

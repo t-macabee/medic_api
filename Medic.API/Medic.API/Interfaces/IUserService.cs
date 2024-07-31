@@ -5,7 +5,7 @@ namespace Medic.API.Interfaces
 {
     public interface IUserService
     {
-        Task<PagedResult<UsersDto>> GetAllUsers(BaseSearchObject search);
+        Task<IEnumerable<UsersDto>> GetAllUsers();
         Task<UsersDto> GetUserDetails(int id);
         Task<UsersDto> EditUser(int id, UserEditDto userEdit);
         Task ToggleUserStatus(int id);

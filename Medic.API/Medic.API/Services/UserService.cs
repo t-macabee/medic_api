@@ -20,26 +20,10 @@ namespace Medic.API.Services
             this.mapper = mapper;
         }
 
-        public async Task<PagedResult<UsersDto>> GetAllUsers(BaseSearchObject search)
+        public async Task<IEnumerable<UsersDto>> GetAllUsers()
         {
-            var query = context.Users.AsQueryable();
-
-            query = QueryBuilder.ApplyChaining(query);
-
-            int count = await query.CountAsync();
-
-            query = QueryBuilder.ApplyPaging(query, search.Page, search.PageSize);
-
-            var list = await query.ToListAsync();
-
-            var result = mapper.Map<List<UsersDto>>(list);
-
-            return new PagedResult<UsersDto>
-            {
-                ResultList = result,
-                Count = count,
-                CurrentPage = search.Page
-            };
+            var users = await context.Users.Include(x => x.Role).ToListAsync();
+            return mapper.Map<IEnumerable<UsersDto>>(users);
         }
 
         public async Task<UsersDto> GetUserDetails(int id)
