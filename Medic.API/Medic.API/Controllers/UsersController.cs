@@ -18,9 +18,9 @@ namespace Medic.API.Controllers
         }
 
         [HttpGet("users")]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers([FromQuery]BaseSearchObject search)
         {
-            var users = await userService.GetAllUsers();
+            var users = await userService.GetAllUsers(search);
             return Ok(users);
         }
 
