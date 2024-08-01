@@ -1,10 +1,11 @@
-﻿using Medic.API.Models.DTOs;
+﻿using Medic.API.DTOs;
+using Medic.API.Models;
 
 namespace Medic.API.Interfaces
 {
     public interface IAccountService
     {
-        Task<AuthResponseDto> Register(RegisterDto registerUser);
-        Task<AuthResponseDto> Login(LoginDto login);
+        Task<UserDto> Register(RegisterDto registerUser);
+        Task<UserDto> Login(LoginDto login);
     }
 }

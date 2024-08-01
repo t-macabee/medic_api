@@ -1,4 +1,6 @@
-﻿namespace Medic.API.Models.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Medic.API.DTOs
 {
     public class LoginDto
     {

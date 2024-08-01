@@ -1,5 +1,5 @@
+using Medic.API.DTOs;
 using Medic.API.Interfaces;
-using Medic.API.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers

@@ -1,10 +1,10 @@
 ﻿using MapsterMapper;
 using Medic.API.Data;
+using Medic.API.DTOs;
 using Medic.API.Entities;
 using Medic.API.Helpers;
 using Medic.API.Interfaces;
 using Medic.API.Models;
-using Medic.API.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Medic.API.Services
@@ -23,10 +23,15 @@ namespace Medic.API.Services
             this.tokenService = tokenService;
         }
 
-        public async Task<AuthResponseDto> Login(LoginDto login)
+        public async Task<UserDto> Login(LoginDto login)
         {
-            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(y => y.Username == login.Username);
+            if (string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
+            {
+                throw new Exception("Username and password are required.");
+            }
 
+            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(y => y.Username == login.Username);
+           
             if (user == null)
             {
                 throw new Exception("Invalid username or password.");
@@ -47,20 +52,17 @@ namespace Medic.API.Services
                 throw new Exception("Insufficient credentials. Only administrator can log in.");
             }           
 
-            user.LastLogin = DateTime.Now;
+            user.LastLogin = DateTime.UtcNow;
             await context.SaveChangesAsync();
 
             var token = tokenService.CreateToken(user);
-            var entity = mapper.Map<UsersDto>(user);
+            var entity = mapper.Map<UserDto>(user);
+            entity.Token = token;
 
-            return new AuthResponseDto
-            {
-                User = entity,
-                Token = token
-            };
+            return entity;
         }
 
-        public async Task<AuthResponseDto> Register(RegisterDto registerUser)
+        public async Task<UserDto> Register(RegisterDto registerUser)
         {
             if (await UserExists(registerUser.Username))
             {
@@ -88,13 +90,11 @@ namespace Medic.API.Services
 
             var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == newUser.Id);
 
-            var entity = mapper.Map<UsersDto>(user);
+            var entity = mapper.Map<UserDto>(user);
 
-            return new AuthResponseDto
-            {
-                User = entity,
-                Token = token
-            };
+            entity.Token = token;
+
+            return entity;
         }        
 
         private async Task<bool> UserExists(string username)

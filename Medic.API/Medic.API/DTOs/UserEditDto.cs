@@ -1,4 +1,4 @@
-﻿namespace Medic.API.Models.DTOs
+﻿namespace Medic.API.DTOs
 {
     public class UserEditDto
     {

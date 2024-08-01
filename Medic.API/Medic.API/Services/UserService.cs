@@ -1,10 +1,10 @@
 ﻿using Mapster;
 using MapsterMapper;
 using Medic.API.Data;
+using Medic.API.DTOs;
 using Medic.API.Helpers;
 using Medic.API.Interfaces;
 using Medic.API.Models;
-using Medic.API.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Medic.API.Services
@@ -20,13 +20,13 @@ namespace Medic.API.Services
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<UsersDto>> GetAllUsers()
+        public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             var users = await context.Users.Include(x => x.Role).ToListAsync();
-            return mapper.Map<IEnumerable<UsersDto>>(users);
+            return mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<UsersDto> GetUserDetails(int id)
+        public async Task<UserDto> GetUserDetails(int id)
         {
             var user = await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -35,10 +35,10 @@ namespace Medic.API.Services
                 throw new KeyNotFoundException("User not found.");
             }
 
-            return mapper.Map<UsersDto>(user);
+            return mapper.Map<UserDto>(user);
         }
 
-        public async Task<UsersDto> EditUser(int id, UserEditDto userEdit)
+        public async Task<UserDto> EditUser(int id, UserEditDto userEdit)
         {
             var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == id);
 
@@ -51,7 +51,7 @@ namespace Medic.API.Services
 
             await context.SaveChangesAsync();
 
-            return mapper.Map<UsersDto>(user);
+            return mapper.Map<UserDto>(user);
         }
 
         public async Task ToggleUserStatus(int id)

@@ -1,10 +1,4 @@
-﻿using Mapster;
-using Medic.API.Data;
-using Medic.API.Helpers;
-using Medic.API.Interfaces;
-using Medic.API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 

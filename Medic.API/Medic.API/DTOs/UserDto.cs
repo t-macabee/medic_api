@@ -1,6 +1,6 @@
 ﻿namespace Medic.API.Models
 {
-    public class UsersDto
+    public class UserDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,5 +11,6 @@
         public string Status { get; set; }
         public string Username { get; set; } 
         public RolesDto Role { get; set; }
+        public string Token { get; set; }
     }
 }

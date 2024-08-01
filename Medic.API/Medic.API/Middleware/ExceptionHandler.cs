@@ -1,50 +1,41 @@
 ﻿using Medic.API.Helpers;
-using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
 namespace Medic.API.Middleware
 {
-    public class ExceptionHandler
+    public class ExceptionHandler(RequestDelegate next, ILogger<ExceptionHandler> logger, IHostEnvironment env)
     {
-        private readonly RequestDelegate next;
-        private readonly ILogger<ExceptionHandler> logger;
-        private readonly IHostEnvironment env;
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ExceptionHandler> _logger = logger;
+        private readonly IHostEnvironment _env = env;
 
-        public ExceptionHandler(RequestDelegate next, ILogger<ExceptionHandler> logger, IHostEnvironment env)
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new()
         {
-            this.next = next;
-            this.logger = logger;
-            this.env = env;
-        }
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
 
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, "An unhandled exception occurred while processing the request.");
 
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                var response = env.IsDevelopment()
+                var response = _env.IsDevelopment()
                     ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace)
-                    : new ApiException(context.Response.StatusCode, ex.Message, "Internal server error");
+                    : new ApiException(context.Response.StatusCode, "An unexpected error occurred. Please try again later.", "Internal server error");
 
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                };
-
-                var json = JsonSerializer.Serialize(response, options);
+                var json = JsonSerializer.Serialize(response, JsonSerializerOptions);
 
                 await context.Response.WriteAsync(json);
             }
         }
     }
-
 }

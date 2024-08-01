@@ -1,7 +1,7 @@
 ﻿using Mapster;
+using Medic.API.DTOs;
 using Medic.API.Entities;
 using Medic.API.Models;
-using Medic.API.Models.DTOs;
 
 namespace Medic.API.Helpers
 {
@@ -13,9 +13,11 @@ namespace Medic.API.Helpers
                 .NewConfig()
                 .Map(dest => dest.Name, src => src.Name);
 
-            TypeAdapterConfig<User, UsersDto>
-                .NewConfig();
-               
+            TypeAdapterConfig<User, UserDto>
+                .NewConfig()
+                .Map(dest => dest.DateOfBirth, src => src.DateOfBirth.ToString("d"))
+                .Map(dest => dest.LastLogin, src => src.LastLogin.ToString("d"));
+
             TypeAdapterConfig<UserEditDto, User>
                 .NewConfig();
 

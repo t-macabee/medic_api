@@ -1,5 +1,5 @@
-﻿using Medic.API.Interfaces;
-using Medic.API.Models.DTOs;
+﻿using Medic.API.DTOs;
+using Medic.API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
