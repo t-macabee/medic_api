@@ -1,4 +1,5 @@
 using Medic.API.Extensions;
+using Medic.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.UseCors(builder => builder
     .AllowAnyHeader()
