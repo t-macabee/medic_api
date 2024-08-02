@@ -68,8 +68,8 @@ namespace Medic.API.Data.Migrations
                 columns: new[] { "Id", "DateOfBirth", "ImageUrl", "LastLogin", "Name", "Orders", "PasswordHash", "PasswordSalt", "RoleId", "Status", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/men/23.jpg", new DateTime(2024, 7, 30, 19, 21, 36, 272, DateTimeKind.Local).AddTicks(1098), "John Doe", 0, "finCVnwpnVrLS7Nnn/K+h/JnORUY4j0W0QIbNe1dhBM=", "LmS8TLkiZIkgP16p2hw/hw==", 1, "Active", "admin" },
-                    { 2, new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/women/39.jpg", new DateTime(2024, 7, 30, 19, 21, 36, 272, DateTimeKind.Local).AddTicks(1143), "Jane Doe", 1, "Tr1Z4aCYi3WZLQbfKUyivX0wGqdsLWOAxXqcjWp7cvI=", "/IA42bI6s7+JL/feqtLXBQ==", 2, "Active", "janedoe" }
+                    { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/men/23.jpg", new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8009), "John Doe", 0, "i6ibP2QudV21EDgT1NWRNqJQQvcmfq567byCuWwNoeY=", "E7I8KXJaKRgTH8hyZLycYA==", 1, "Active", "admin" },
+                    { 2, new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/women/39.jpg", new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8058), "Jane Doe", 1, "iyGot99T18/WvbfWViW0FVNfXi/4cZSRYRmnVSOzP5s=", "oztJt9MmGfUs6vo9n1DX8g==", 2, "Active", "janedoe" }
                 });
 
             migrationBuilder.CreateIndex(

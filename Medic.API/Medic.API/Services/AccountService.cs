@@ -74,33 +74,45 @@ namespace Medic.API.Services
             if (nextOrder > 10)
             {
                 throw new InvalidOperationException("Maximum number of orders reached.");
-            }            
+            }
 
             var newUser = mapper.Map<User>(registerUser);
 
             newUser.PasswordSalt = PasswordBuilder.GenerateSalt();
             newUser.PasswordHash = PasswordBuilder.GenerateHash(newUser.PasswordSalt, registerUser.Password);
             newUser.Orders = nextOrder;
-            newUser.Status = "Active";            
+            newUser.Status = "Active";
 
             await context.Users.AddAsync(newUser);
             await context.SaveChangesAsync();
 
-            var token = tokenService.CreateToken(newUser);
+            var userWithRole = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == newUser.Id);
 
-            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == newUser.Id);
+            var token = tokenService.CreateToken(userWithRole);
 
-            var entity = mapper.Map<UserDto>(user);
+            var entity = mapper.Map<UserDto>(userWithRole);
 
             entity.Token = token;
 
             return entity;
-        }        
+        }
 
-        private async Task<bool> UserExists(string username)
+        public async Task<int> GetOrderNumber()
         {
-            return await context.Users.AnyAsync(x => x.Username == username.ToLower());
-        }        
+            var nextOrder = await context.Users.OrderByDescending(x => x.Orders).Select(y => y.Orders).FirstOrDefaultAsync() + 1;
+
+            if (nextOrder > 10) 
+            {
+                throw new InvalidOperationException("Maximum number of orders reached.");
+            }
+
+            return nextOrder;
+        }
+
+        public async Task<bool> UserExists(string username)
+        {
+            return await context.Users.AnyAsync(x => x.Username.ToLower() == username.ToLower());
+        }
     }
 }
 

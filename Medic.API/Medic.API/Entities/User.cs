@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime LastLogin { get; set; }
+        public DateTime DateOfBirth { get; set; } = DateTime.UtcNow;
+        public DateTime LastLogin { get; set; } = DateTime.UtcNow;
         public int Orders { get; set; }
         public string ImageUrl { get; set; } 
         public string Status { get; set; } 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Medic.API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240730172136_Initial")]
+    [Migration("20240802201036_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,11 +110,11 @@ namespace Medic.API.Data.Migrations
                             Id = 1,
                             DateOfBirth = new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "https://randomuser.me/api/portraits/men/23.jpg",
-                            LastLogin = new DateTime(2024, 7, 30, 19, 21, 36, 272, DateTimeKind.Local).AddTicks(1098),
+                            LastLogin = new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8009),
                             Name = "John Doe",
                             Orders = 0,
-                            PasswordHash = "finCVnwpnVrLS7Nnn/K+h/JnORUY4j0W0QIbNe1dhBM=",
-                            PasswordSalt = "LmS8TLkiZIkgP16p2hw/hw==",
+                            PasswordHash = "i6ibP2QudV21EDgT1NWRNqJQQvcmfq567byCuWwNoeY=",
+                            PasswordSalt = "E7I8KXJaKRgTH8hyZLycYA==",
                             RoleId = 1,
                             Status = "Active",
                             Username = "admin"
@@ -124,11 +124,11 @@ namespace Medic.API.Data.Migrations
                             Id = 2,
                             DateOfBirth = new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ImageUrl = "https://randomuser.me/api/portraits/women/39.jpg",
-                            LastLogin = new DateTime(2024, 7, 30, 19, 21, 36, 272, DateTimeKind.Local).AddTicks(1143),
+                            LastLogin = new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8058),
                             Name = "Jane Doe",
                             Orders = 1,
-                            PasswordHash = "Tr1Z4aCYi3WZLQbfKUyivX0wGqdsLWOAxXqcjWp7cvI=",
-                            PasswordSalt = "/IA42bI6s7+JL/feqtLXBQ==",
+                            PasswordHash = "iyGot99T18/WvbfWViW0FVNfXi/4cZSRYRmnVSOzP5s=",
+                            PasswordSalt = "oztJt9MmGfUs6vo9n1DX8g==",
                             RoleId = 2,
                             Status = "Active",
                             Username = "janedoe"

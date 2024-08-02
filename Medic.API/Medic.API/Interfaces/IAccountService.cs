@@ -7,5 +7,6 @@ namespace Medic.API.Interfaces
     {
         Task<UserDto> Register(RegisterDto registerUser);
         Task<UserDto> Login(LoginDto login);
+        Task<int> GetOrderNumber();
     }
 }
