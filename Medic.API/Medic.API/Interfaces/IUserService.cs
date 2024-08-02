@@ -6,8 +6,9 @@ namespace Medic.API.Interfaces
     public interface IUserService
     {
         Task<IEnumerable<UserDto>> GetAllUsers();
-        Task<UserDto> GetUserDetails(int id);
+        Task<UserDto> GetUserById(int id);
         Task<UserDto> EditUser(int id, UserEditDto userEdit);
         Task ToggleUserStatus(int id);
+
     }
 }

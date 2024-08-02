@@ -26,7 +26,7 @@ namespace Medic.API.Services
             return mapper.Map<IEnumerable<UserDto>>(users);
         }
 
-        public async Task<UserDto> GetUserDetails(int id)
+        public async Task<UserDto> GetUserById(int id)
         {
             var user = await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -47,7 +47,30 @@ namespace Medic.API.Services
                 throw new KeyNotFoundException("User not found.");
             }
 
-            user = userEdit.Adapt(user);
+            if (user.Username != userEdit.Username && await context.Users.AnyAsync(x => x.Username == userEdit.Username))
+            {
+                throw new Exception("Username is already taken.");
+            }
+
+            if (!string.IsNullOrEmpty(userEdit.Name))
+            {
+                user.Name = userEdit.Name;
+            }
+
+            if (!string.IsNullOrEmpty(userEdit.Username))
+            {
+                user.Username = userEdit.Username;
+            }
+
+            if (!string.IsNullOrEmpty(userEdit.ImageUrl))
+            {
+                user.ImageUrl = userEdit.ImageUrl;
+            }
+
+            if (!string.IsNullOrEmpty(userEdit.Status))
+            {
+                user.Status = userEdit.Status;
+            }
 
             await context.SaveChangesAsync();
 
@@ -77,6 +100,6 @@ namespace Medic.API.Services
             await context.SaveChangesAsync();
         }
 
-       
+        
     }       
 }

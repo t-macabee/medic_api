@@ -23,13 +23,6 @@ namespace Medic.API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("details/{id}")]
-        public async Task<IActionResult> GetUserDetails(int id)
-        {
-            var user = await userService.GetUserDetails(id);
-            return Ok(user);
-        }
-
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditUser(int id, [FromBody] UserEditDto userEditDto)
         {
