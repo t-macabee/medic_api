@@ -18,7 +18,9 @@ namespace Medic.API.Extensions
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAccountService, AccountService>();
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ITokenService, TokenService>();            
+            services.AddScoped<IPhotoService, PhotoService>();            
+            services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
             services.AddMapster();
             MapsterConfiguration.RegisterMappings();

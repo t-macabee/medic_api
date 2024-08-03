@@ -9,19 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Medic.API.Services
 {
-    public class AccountService : IAccountService
+    public class AccountService(DataContext context, IMapper mapper, ITokenService tokenService) : IAccountService
     {
-        private DataContext context { get; set; }
-        private IMapper mapper { get; set; }
+        private DataContext context { get; set; } = context;
+        private IMapper mapper { get; set; } = mapper;
 
-        private readonly ITokenService tokenService;
-
-        public AccountService(DataContext context, IMapper mapper, ITokenService tokenService)
-        {
-            this.context = context;
-            this.mapper = mapper;
-            this.tokenService = tokenService;
-        }
+        private readonly ITokenService tokenService = tokenService;
 
         public async Task<UserDto> Login(LoginDto login)
         {
@@ -30,12 +23,7 @@ namespace Medic.API.Services
                 throw new Exception("Username and password are required.");
             }
 
-            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(y => y.Username == login.Username);
-           
-            if (user == null)
-            {
-                throw new Exception("Invalid username or password.");
-            }
+            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(y => y.Username == login.Username) ?? throw new Exception("Invalid username or password.");
 
             if (user.Status == "Blocked")
             {
@@ -62,14 +50,17 @@ namespace Medic.API.Services
             return entity;
         }
 
-        public async Task<UserDto> Register(RegisterDto registerUser)
+        public async Task<MemberDto> Register(RegisterDto registerUser)
         {
             if (await UserExists(registerUser.Username))
             {
                 throw new Exception("Username is already taken!");
             }
 
-            int nextOrder = await context.Users.OrderByDescending(x => x.Orders).Select(y => y.Orders).FirstOrDefaultAsync() + 1;
+            int nextOrder = await context.Users
+                .OrderByDescending(x => x.Orders)
+                .Select(y => y.Orders)
+                .FirstOrDefaultAsync() + 1;
 
             if (nextOrder > 10)
             {
@@ -82,17 +73,24 @@ namespace Medic.API.Services
             newUser.PasswordHash = PasswordBuilder.GenerateHash(newUser.PasswordSalt, registerUser.Password);
             newUser.Orders = nextOrder;
             newUser.Status = "Active";
+            var defaultPhoto = registerUser.PhotoUrl;
 
             await context.Users.AddAsync(newUser);
             await context.SaveChangesAsync();
 
-            var userWithRole = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == newUser.Id);
+            var userWithRole = await context.Users
+                .Include(x => x.Role)
+                .Include(x => x.Photos) 
+                .SingleOrDefaultAsync(x => x.Id == newUser.Id);
+
+            if (userWithRole == null)
+            {
+                throw new Exception("User could not be found after creation.");
+            }
 
             var token = tokenService.CreateToken(userWithRole);
 
-            var entity = mapper.Map<UserDto>(userWithRole);
-
-            entity.Token = token;
+            var entity = mapper.Map<MemberDto>(userWithRole);
 
             return entity;
         }

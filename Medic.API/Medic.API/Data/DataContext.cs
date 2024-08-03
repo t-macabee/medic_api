@@ -11,9 +11,15 @@ namespace Medic.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {           
             modelBuilder.Entity<User>()
-           .HasOne(u => u.Role)
-           .WithMany(r => r.Users)
-           .HasForeignKey(u => u.RoleId);
+                .HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Photos)
+                .WithOne(p => p.User)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
 

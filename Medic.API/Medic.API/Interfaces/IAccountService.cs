@@ -5,7 +5,7 @@ namespace Medic.API.Interfaces
 {
     public interface IAccountService
     {
-        Task<UserDto> Register(RegisterDto registerUser);
+        Task<MemberDto> Register(RegisterDto registerUser);
         Task<UserDto> Login(LoginDto login);
         Task<int> GetOrderNumber();
     }

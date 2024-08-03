@@ -22,6 +22,35 @@ namespace Medic.API.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Medic.API.Entities.Photos", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("Medic.API.Entities.Roles", b =>
                 {
                     b.Property<int>("Id")
@@ -62,10 +91,6 @@ namespace Medic.API.Data.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("LastLogin")
                         .HasColumnType("datetime2");
 
@@ -82,6 +107,9 @@ namespace Medic.API.Data.Migrations
 
                     b.Property<string>("PasswordSalt")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
@@ -106,30 +134,27 @@ namespace Medic.API.Data.Migrations
                         {
                             Id = 1,
                             DateOfBirth = new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://randomuser.me/api/portraits/men/23.jpg",
-                            LastLogin = new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8009),
+                            LastLogin = new DateTime(2024, 8, 3, 21, 30, 17, 349, DateTimeKind.Local).AddTicks(8220),
                             Name = "John Doe",
                             Orders = 0,
-                            PasswordHash = "i6ibP2QudV21EDgT1NWRNqJQQvcmfq567byCuWwNoeY=",
-                            PasswordSalt = "E7I8KXJaKRgTH8hyZLycYA==",
+                            PasswordHash = "nmHXdNcANhggl3/9ydyYANudbg6lx9tDHKEUxkoU5ls=",
+                            PasswordSalt = "zQHRJnIdZozb+rSyb/cz3A==",
+                            PhotoUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRDII-r7EXoUFaBaDk0RdiqbtUf6RCG_uE-J4XJULl6OEvObd97",
                             RoleId = 1,
                             Status = "Active",
                             Username = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ImageUrl = "https://randomuser.me/api/portraits/women/39.jpg",
-                            LastLogin = new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8058),
-                            Name = "Jane Doe",
-                            Orders = 1,
-                            PasswordHash = "iyGot99T18/WvbfWViW0FVNfXi/4cZSRYRmnVSOzP5s=",
-                            PasswordSalt = "oztJt9MmGfUs6vo9n1DX8g==",
-                            RoleId = 2,
-                            Status = "Active",
-                            Username = "janedoe"
                         });
+                });
+
+            modelBuilder.Entity("Medic.API.Entities.Photos", b =>
+                {
+                    b.HasOne("Medic.API.Entities.User", "User")
+                        .WithMany("Photos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Medic.API.Entities.User", b =>
@@ -146,6 +171,11 @@ namespace Medic.API.Data.Migrations
             modelBuilder.Entity("Medic.API.Entities.Roles", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Medic.API.Entities.User", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

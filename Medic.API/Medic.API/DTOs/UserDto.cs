@@ -1,16 +1,12 @@
-﻿namespace Medic.API.Models
+﻿using Medic.API.DTOs;
+
+namespace Medic.API.Models
 {
     public class UserDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string DateOfBirth { get; set; }
-        public string LastLogin { get; set; }
-        public int Orders { get; set; }
-        public string ImageUrl { get; set; } 
-        public string Status { get; set; }
         public string Username { get; set; } 
-        public RolesDto Role { get; set; }
         public string Token { get; set; }
+        public string? PhotoUrl { get; set; }
     }
 }

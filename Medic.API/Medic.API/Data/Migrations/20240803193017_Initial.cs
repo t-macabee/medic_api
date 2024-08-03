@@ -36,12 +36,12 @@ namespace Medic.API.Data.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Orders = table.Column<int>(type: "int", nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,6 +50,28 @@ namespace Medic.API.Data.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsMain = table.Column<bool>(type: "bit", nullable: false),
+                    PublicId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -65,12 +87,13 @@ namespace Medic.API.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "DateOfBirth", "ImageUrl", "LastLogin", "Name", "Orders", "PasswordHash", "PasswordSalt", "RoleId", "Status", "Username" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/men/23.jpg", new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8009), "John Doe", 0, "i6ibP2QudV21EDgT1NWRNqJQQvcmfq567byCuWwNoeY=", "E7I8KXJaKRgTH8hyZLycYA==", 1, "Active", "admin" },
-                    { 2, new DateTime(1997, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "https://randomuser.me/api/portraits/women/39.jpg", new DateTime(2024, 8, 2, 22, 10, 36, 352, DateTimeKind.Local).AddTicks(8058), "Jane Doe", 1, "iyGot99T18/WvbfWViW0FVNfXi/4cZSRYRmnVSOzP5s=", "oztJt9MmGfUs6vo9n1DX8g==", 2, "Active", "janedoe" }
-                });
+                columns: new[] { "Id", "DateOfBirth", "LastLogin", "Name", "Orders", "PasswordHash", "PasswordSalt", "PhotoUrl", "RoleId", "Status", "Username" },
+                values: new object[] { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 8, 3, 21, 30, 17, 349, DateTimeKind.Local).AddTicks(8220), "John Doe", 0, "nmHXdNcANhggl3/9ydyYANudbg6lx9tDHKEUxkoU5ls=", "zQHRJnIdZozb+rSyb/cz3A==", "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRDII-r7EXoUFaBaDk0RdiqbtUf6RCG_uE-J4XJULl6OEvObd97", 1, "Active", "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_UserId",
+                table: "Photos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -81,6 +104,9 @@ namespace Medic.API.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Photos");
+
             migrationBuilder.DropTable(
                 name: "Users");
 

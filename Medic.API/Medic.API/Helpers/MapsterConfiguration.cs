@@ -13,12 +13,16 @@ namespace Medic.API.Helpers
                 .NewConfig()
                 .Map(dest => dest.Name, src => src.Name);
 
-            TypeAdapterConfig<User, UserDto>
-                .NewConfig()
-                .Map(dest => dest.DateOfBirth, src => src.DateOfBirth.ToString("d"))
-                .Map(dest => dest.LastLogin, src => src.LastLogin.ToString("d"));
+            TypeAdapterConfig<Photos, PhotoDto>
+               .NewConfig();
 
-            TypeAdapterConfig<UserEditDto, User>
+            TypeAdapterConfig<User, MemberDto>
+             .NewConfig()
+             .Map(dest => dest.DateOfBirth, src => src.DateOfBirth.ToString("d"))
+             .Map(dest => dest.LastLogin, src => src.LastLogin.ToString("d"))
+             .Map(dest => dest.PhotoUrl, src => src.PhotoUrl);
+
+            TypeAdapterConfig<MemberEditDto, User>
                 .NewConfig();
 
             TypeAdapterConfig<RegisterDto, User>

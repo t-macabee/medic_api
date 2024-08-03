@@ -1,51 +1,41 @@
-﻿using Mapster;
-using MapsterMapper;
+﻿using MapsterMapper;
 using Medic.API.Data;
 using Medic.API.DTOs;
-using Medic.API.Helpers;
+using Medic.API.Entities;
 using Medic.API.Interfaces;
 using Medic.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Medic.API.Services
 {
-    public class UserService : IUserService
+    public class UserService(DataContext context, IMapper mapper) : IUserService
     {
-        private DataContext context { get; set; }
-        private IMapper mapper { get; set; }
+        private DataContext context { get; set; } = context;
+        private IMapper mapper { get; set; } = mapper;
 
-        public UserService(DataContext context, IMapper mapper)
+        public async Task<IEnumerable<MemberDto>> GetAllUsers()
         {
-            this.context = context;
-            this.mapper = mapper;
+            var users = await context.Users.Include(x => x.Role).Include(x => x.Photos).ToListAsync();
+
+            return mapper.Map<IEnumerable<MemberDto>>(users);
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllUsers()
+        public async Task<MemberDto> GetUserById(int id)
         {
-            var users = await context.Users.Include(x => x.Role).ToListAsync();
-            return mapper.Map<IEnumerable<UserDto>>(users);
+            var user = await context.Users.Include(x => x.Role).Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id) ?? throw new KeyNotFoundException("User not found.");
+
+            return mapper.Map<MemberDto>(user);
         }
 
-        public async Task<UserDto> GetUserById(int id)
+        public async Task<User> GetUserByUsername(string username)
         {
-            var user = await context.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Id == id);
-
-            if (user == null)
-            {
-                throw new KeyNotFoundException("User not found.");
-            }
-
-            return mapper.Map<UserDto>(user);
+            return await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Username == username);            
         }
 
-        public async Task<UserDto> EditUser(int id, UserEditDto userEdit)
+        public async Task<MemberDto> EditUser(int id, MemberEditDto userEdit)
         {
-            var user = await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Id == id);
-
-            if (user == null)
-            {
-                throw new KeyNotFoundException("User not found.");
-            }
+            var user = await context.Users.Include(x => x.Role).Include(x => x.Photos).SingleOrDefaultAsync(x => x.Id == id)
+                ?? throw new KeyNotFoundException("User not found.");
 
             if (user.Username != userEdit.Username && await context.Users.AnyAsync(x => x.Username == userEdit.Username))
             {
@@ -56,17 +46,10 @@ namespace Medic.API.Services
             {
                 user.Name = userEdit.Name;
             }
-
             if (!string.IsNullOrEmpty(userEdit.Username))
             {
                 user.Username = userEdit.Username;
             }
-
-            if (!string.IsNullOrEmpty(userEdit.ImageUrl))
-            {
-                user.ImageUrl = userEdit.ImageUrl;
-            }
-
             if (!string.IsNullOrEmpty(userEdit.Status))
             {
                 user.Status = userEdit.Status;
@@ -74,17 +57,12 @@ namespace Medic.API.Services
 
             await context.SaveChangesAsync();
 
-            return mapper.Map<UserDto>(user);
+            return mapper.Map<MemberDto>(user);
         }
 
         public async Task ToggleUserStatus(int id)
         {
-            var user = await context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                throw new KeyNotFoundException("User not found.");
-            }
+            var user = await context.Users.FindAsync(id) ?? throw new KeyNotFoundException("User not found.");
 
             if (user.Status == "Blocked")
             {
@@ -98,8 +76,6 @@ namespace Medic.API.Services
             context.Users.Update(user);
 
             await context.SaveChangesAsync();
-        }
-
-        
+        }           
     }       
 }

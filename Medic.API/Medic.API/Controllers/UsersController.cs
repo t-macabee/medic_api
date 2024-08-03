@@ -1,20 +1,12 @@
+using MapsterMapper;
 using Medic.API.DTOs;
 using Medic.API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
 namespace Medic.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    //[Authorize(Roles = "Administrator")]
-    public class UsersController : ControllerBase
+    public class UsersController(IUserService userService) : BaseController
     {
-        private readonly IUserService userService;
-
-        public UsersController(IUserService userService)
-        {
-            this.userService = userService;
-        }
+        private readonly IUserService userService = userService;
 
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAllUsers()
@@ -24,7 +16,7 @@ namespace Medic.API.Controllers
         }
 
         [HttpPut("edit/{id}")]
-        public async Task<IActionResult> EditUser(int id, [FromBody] UserEditDto userEditDto)
+        public async Task<IActionResult> EditUser(int id, [FromBody] MemberEditDto userEditDto)
         {
             try
             {
@@ -49,6 +41,6 @@ namespace Medic.API.Controllers
             {
                 return StatusCode(500, new { message = "An unexpected error occurred." });
             }
-        }        
+        }      
     }
 }

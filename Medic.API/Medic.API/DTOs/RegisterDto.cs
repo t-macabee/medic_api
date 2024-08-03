@@ -6,6 +6,6 @@
         public string Username { get; set; }
         public string Password { get; set; }
         public string DateOfBirth { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? PhotoUrl { get; set; }
     }
 }

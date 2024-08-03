@@ -1,22 +1,12 @@
 ﻿using Medic.API.DTOs;
 using Medic.API.Interfaces;
-using Medic.API.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Medic.API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    //[Authorize(Roles = "Administrator")]
-    public class AccountController : ControllerBase
+    public class AccountController(IAccountService accountService) : BaseController
     {
-        private readonly IAccountService accountService;
-        
-        public AccountController(IAccountService accountService)
-        {
-            this.accountService = accountService;            
-        }
+        private readonly IAccountService accountService = accountService;
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterDto registerUser)
