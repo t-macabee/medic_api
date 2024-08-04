@@ -88,7 +88,7 @@ namespace Medic.API.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "DateOfBirth", "LastLogin", "Name", "Orders", "PasswordHash", "PasswordSalt", "PhotoUrl", "RoleId", "Status", "Username" },
-                values: new object[] { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 8, 3, 21, 30, 17, 349, DateTimeKind.Local).AddTicks(8220), "John Doe", 0, "nmHXdNcANhggl3/9ydyYANudbg6lx9tDHKEUxkoU5ls=", "zQHRJnIdZozb+rSyb/cz3A==", "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRDII-r7EXoUFaBaDk0RdiqbtUf6RCG_uE-J4XJULl6OEvObd97", 1, "Active", "admin" });
+                values: new object[] { 1, new DateTime(1996, 7, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 8, 4, 8, 49, 59, 693, DateTimeKind.Local).AddTicks(1603), "John Doe", 0, "TOPXxO3ZscDAS1WrcUNohI6hTJP8hW6MT4GJStMV9tw=", "vzTZ0aLtzVT+/Hl4KyXBFA==", "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRDII-r7EXoUFaBaDk0RdiqbtUf6RCG_uE-J4XJULl6OEvObd97", 1, "Active", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_UserId",

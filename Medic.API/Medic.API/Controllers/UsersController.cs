@@ -15,6 +15,20 @@ namespace Medic.API.Controllers
             return Ok(users);
         }
 
+        [HttpGet("{id}", Name = "GetUser")]
+        public async Task<ActionResult<MemberDto>> GetArtistById(int id)
+        {
+            try
+            {
+                var user = await userService.GetUserById(id);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> EditUser(int id, [FromBody] MemberEditDto userEditDto)
         {

@@ -20,16 +20,9 @@ namespace Medic.API.Services
             return mapper.Map<IEnumerable<MemberDto>>(users);
         }
 
-        public async Task<MemberDto> GetUserById(int id)
+        public async Task<User> GetUserById(int id)
         {
-            var user = await context.Users.Include(x => x.Role).Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id) ?? throw new KeyNotFoundException("User not found.");
-
-            return mapper.Map<MemberDto>(user);
-        }
-
-        public async Task<User> GetUserByUsername(string username)
-        {
-            return await context.Users.Include(x => x.Role).SingleOrDefaultAsync(x => x.Username == username);            
+            return await context.Users.Include(x => x.Role).Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id) ?? throw new KeyNotFoundException("User not found.");
         }
 
         public async Task<MemberDto> EditUser(int id, MemberEditDto userEdit)

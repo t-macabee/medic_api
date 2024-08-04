@@ -51,5 +51,88 @@ namespace Medic.API.Controllers
 
             return BadRequest("Problem adding photo");
         }
+
+        [HttpPut("set-main/{userId}/{photoId}")]
+        public async Task<ActionResult> SetMainPhoto(int userId, int photoId)
+        {
+            var user = await userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+
+            if (photo == null)
+            {
+                return NotFound("Photo not found");
+            }
+
+            if (photo.IsMain)
+            {
+                return BadRequest("This is already the main photo");
+            }
+
+            var currentMain = user.Photos.FirstOrDefault(x => x.IsMain);
+
+            if (currentMain != null)
+            {
+                currentMain.IsMain = false;
+            }
+
+            photo.IsMain = true;
+
+            user.PhotoUrl = photo.Url;
+
+            if (await context.SaveChangesAsync() > 0)
+            {
+                return NoContent();
+            }
+
+            return BadRequest("Failed to set main photo");
+        }
+
+        [HttpDelete("delete-photo/{userId}/{photoId}")]
+        public async Task<ActionResult> DeletePhoto(int userId, int photoId)
+        {
+            var user = await userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+
+            if (photo == null)
+            {
+                return NotFound("Photo not found");
+            }
+
+            if (photo.IsMain)
+            {
+                return BadRequest("You cannot delete the main photo");
+            }
+
+            if (photo.PublicId != null)
+            {
+                var result = await photoService.DeletePhoto(photo.PublicId);
+                if(result.Error != null)
+                {
+                    return BadRequest(result.Error.Message);
+                }
+            }
+
+            user.Photos.Remove(photo);
+
+            if (await context.SaveChangesAsync() > 0)
+            {
+                return Ok();
+            }
+
+            return BadRequest("Problem deleting photo");
+        }
+
     }
 }
